@@ -62,35 +62,6 @@ sudo iptables -A OUTPUT -m limit --limit 5/min -j LOG --log-prefix "iptables-out
 
 ---
 
-## Attack vs. Defense Validation
-
-To make sure the firewall actually works under real-world network conditions, we test it against common attack methods:
-
-### 1. Port Probing & Log Auditing (Nmap Scan)
-
-- **The Attack:** An attacker runs a stealth port scan (`nmap -sS`) against the server to locate unmonitored ports.
-- **The Firewall Response:** Ports 22, 80, and 443 respond to the handshake and show up as `Open`. Unused ports (like port 23 Telnet) are dropped at the bottom of the chain.
-- **The Log Evidence:** Checking the server logs reveals the exact source IP and port numbers of the unauthorized probe:
-  ```text
-  iptables-in-denied: IN=eth0 OUT= SRC=192.168.1.200 DST=192.168.1.105 PROTO=TCP SPT=54321 DPT=23 FLAGS=S
-  ```
-
-### 2. Session Hijacking (Fake ACK Packets)
-
-- **The Attack:** An attacker crafts a packet out of nowhere with the `ACK` flag enabled (using a tool like `hping3`), trying to trick the firewall into thinking it's part of an existing, open conversation.
-- **The Firewall Response:** The `conntrack` engine checks its internal memory state table, realizes your server never started this conversation, and drops the packet instantly.
-
-### 3. Egress Control (Reverse Shell Block)
-
-- **The Attack:** A hacker finds a code flaw in a web application running on port 80 and tries to force the server to execute a command that connects back to the hacker's machine (a reverse shell).
-- **The Firewall Response:** The attack fails. Because we removed general outbound web access, the server is blocked from _initiating_ new web connections out to the internet.
-- **The Log Evidence:** Running an outbound test triggers an alert in your exit log:
-  ```text
-  iptables-out-denied: IN= OUT=eth0 SRC=192.168.1.105 DST=192.168.1.200 PROTO=TCP SPT=43210 DPT=4444 FLAGS=S
-  ```
-
----
-
 ## Useful Audit Commands
 
 - `sudo iptables -L -v -n --line-numbers`: View your active firewall rules alongside packet counters showing exactly how much traffic each rule has caught.

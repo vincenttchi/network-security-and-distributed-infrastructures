@@ -96,3 +96,15 @@ To make sure the firewall actually works under real-world network conditions, we
 - `sudo iptables -L -v -n --line-numbers`: View your active firewall rules alongside packet counters showing exactly how much traffic each rule has caught.
 - `sudo conntrack -L`: View the active in-memory state table tracking every live network conversation currently passing through the host.
 - `sudo tail -f /var/log/syslog | grep "iptables-"`: Monitor blocked inbound and outbound packets live as they hit the firewall boundaries.
+
+---
+
+## ⚖️ Educational Disclaimer & Responsible Use
+
+The code, documentation, and technical artifacts contained within this repository were developed exclusively for educational purposes, structured academic laboratory exercises, and authorized vulnerability assessments.
+
+- All activities were performed within fully isolated, private virtualization environments or authorized academic lab environments.
+- No production systems were disrupted, and no unauthorized network interception or data collection took place.
+- This repository does not host malicious utilities, nor is it intended to facilitate unauthorized system intrusion.
+
+The primary objective of these projects is to demonstrate defensive engineering principles, host auditing methodologies, and an understanding of operating system internals for professional development.

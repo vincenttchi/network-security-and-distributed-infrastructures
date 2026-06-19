@@ -1,0 +1,26 @@
+# Setting up sender and receiver images
+services:
+  # Receiver image setup
+  receiver:
+    build:
+      context: .
+      target: receiver
+    command: sh -c "tcpdump -i eth0 -n -vv udp port 5007 -l & python multicast_receiver.py --duration 30"
+    networks:
+      - multicast_net
+
+  # Sender image setup
+  sender:
+    build:
+      context: .
+      target: sender
+    command: sh -c "sleep 0.5 && python multicast_sender.py --mode json"
+    depends_on:
+      - receiver
+    networks:
+      - multicast_net
+
+# Network setup
+networks:
+  multicast_net:
+    driver: bridge

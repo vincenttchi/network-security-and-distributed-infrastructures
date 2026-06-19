@@ -1,0 +1,39 @@
+# Bootstrap registry + two p2p nodes on a shared Docker network so containers
+# can reach each other by name. Nodes get BOOTSTRAP_URL and SELF_URL env vars
+# for Phase 3 discovery work.
+
+services:
+  bootstrap:
+    build:
+      context: .
+      dockerfile: bootstrap.Dockerfile
+    image: bootstrap-node
+    container_name: bootstrap
+    ports:
+      - "5000:5000"
+
+  node1:
+    build: .
+    image: p2p-node
+    container_name: node1
+    environment:
+      - NODE_NAME=node1
+      - SELF_URL=http://node1:5000
+      - BOOTSTRAP_URL=http://bootstrap:5000
+    ports:
+      - "5001:5000"
+    depends_on:
+      - bootstrap
+
+  node2:
+    build: .
+    image: p2p-node
+    container_name: node2
+    environment:
+      - NODE_NAME=node2
+      - SELF_URL=http://node2:5000
+      - BOOTSTRAP_URL=http://bootstrap:5000
+    ports:
+      - "5002:5000"
+    depends_on:
+      - bootstrap

@@ -1,0 +1,54 @@
+services:
+  bootstrap:
+    build:
+      context: .
+      dockerfile: bootstrap.Dockerfile
+    image: bootstrap-node
+    container_name: bootstrap
+    ports:
+      - "6000:5000"
+
+  node1:
+    build: .
+    image: p2p-node
+    container_name: node1
+    environment:
+      - NODE_NAME=node1
+      - SELF_URL=http://node1:5000
+      - BOOTSTRAP_URL=http://bootstrap:5000
+    ports:
+      - "6001:5000"
+    volumes:
+      - ./storage/node1:/app/storage
+    depends_on:
+      - bootstrap
+
+  node2:
+    build: .
+    image: p2p-node
+    container_name: node2
+    environment:
+      - NODE_NAME=node2
+      - SELF_URL=http://node2:5000
+      - BOOTSTRAP_URL=http://bootstrap:5000
+    ports:
+      - "6002:5000"
+    volumes:
+      - ./storage/node2:/app/storage
+    depends_on:
+      - bootstrap
+
+  node3:
+    build: .
+    image: p2p-node
+    container_name: node3
+    environment:
+      - NODE_NAME=node3
+      - SELF_URL=http://node3:5000
+      - BOOTSTRAP_URL=http://bootstrap:5000
+    ports:
+      - "6003:5000"
+    volumes:
+      - ./storage/node3:/app/storage
+    depends_on:
+      - bootstrap

@@ -1,0 +1,44 @@
+services:
+  server1:
+    build: .
+    command: python server.py
+    environment:
+      - SERVER_NAME=server1
+    networks:
+      anycast_net:
+        aliases:
+          - server
+
+  server2:
+    build: .
+    command: python server.py
+    environment:
+      - SERVER_NAME=server2
+    networks:
+      anycast_net:
+        aliases:
+          - server
+
+  server3:
+    build: .
+    command: python server.py
+    environment:
+      - SERVER_NAME=server3
+    networks:
+      anycast_net:
+        aliases:
+          - server
+
+  client:
+    build: .
+    command: python client.py
+    networks:
+      - anycast_net
+    depends_on:
+      - server1
+      - server2
+      - server3
+
+networks:
+  anycast_net:
+    driver: bridge

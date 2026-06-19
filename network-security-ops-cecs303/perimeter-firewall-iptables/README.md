@@ -99,7 +99,7 @@ To make sure the firewall actually works under real-world network conditions, we
 
 ---
 
-## ⚖️ Educational Disclaimer & Responsible Use
+## Educational Disclaimer & Responsible Use
 
 The code, documentation, and technical artifacts contained within this repository were developed exclusively for educational purposes, structured academic laboratory exercises, and authorized vulnerability assessments.
 

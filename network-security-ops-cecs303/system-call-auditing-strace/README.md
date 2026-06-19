@@ -89,7 +89,7 @@ read(6, "\f\0\0\0\6cecsvc", 11)         = 11
 
 ---
 
-## ⚖️ Educational Disclaimer & Responsible Use
+## Educational Disclaimer & Responsible Use
 
 The code, documentation, and technical artifacts contained within this repository were developed exclusively for educational purposes, structured academic laboratory exercises, and authorized vulnerability assessments.
 
